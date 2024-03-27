@@ -1,6 +1,36 @@
 let screenWidth = screen.width;
 let screenHeight = screen.height;
 
+let positionIndex = 0;
+let imageurls = [
+  "./teja-images/IMG-20230326-WA0006.jpg",
+  "./teja-images/IMG-20231002-WA0008.jpg",
+  "./teja-images/ IMG-20240111-WA0011.jpg",
+  "./teja-images/IMG_20230521_154115.jpg",
+  "./teja-images/IMG_20231222_185919.jpg",
+  "./teja-images/IMG_20240211_174719.jpg",
+  "./teja-images/mar11-1.jpg",
+  "./teja-images/IMG-20230513-WA0004.jpg",
+  "./teja-images/IMG-20230513-WA0005.jpg",
+  "./teja-images/IMG-20230513-WA0008.jpg",
+  "./teja-images/IMG-20230513-WA0006.jpg",
+  "./teja-images/IMG-20230617-WA0000.jpg",
+  "./teja-images/IMG_20220811_164225_178.jpg",
+  "./teja-images/IMG-20231124-WA0022.jpg",
+  "./teja-images/IMG-20240111-WA0005.jpg",
+  "./teja-images/IMG_20231210_174311.jpg",
+  "./teja-images/IMG_20230119_223445_243.jpg",
+  "./teja-images/IMG_20240203_205951.jpg",
+  "./teja-images/IMG_20231001_175733.jpg",
+  "./teja-images/feb14-1.jpg",
+  "./teja-images/mar14.jpg",
+  "./teja-images/IMG-20240111-WA0007.jpg",
+  "./teja-images/IMG_20231001_185611.jpg",
+  "./teja-images/IMG_20231210_181445.jpg",
+  "./teja-images/IMG-20231124-WA0014.jpg"
+];
+let urlsArrayLength = imageurls.length;
+
 const mainImageDiv = document.getElementById("mainImage");
 const fontAnimationDiv = document.getElementById("typing-animation");
 
@@ -9,6 +39,7 @@ function preloadImage(url) {
   img.src = url;
   return img;
 }
+
 const mainImageFile = preloadImage("./teja-images/Main-image.jpg");
 mainImageFile.setAttribute("class", "mainImage");
 //img.setAttribute('class', className);
@@ -121,7 +152,11 @@ window.addEventListener("touchend", (e) => {
       gestureState = "Swipe Down";
     }
   }
-
+  // img1 = preloadImage(imageurls[positionIndex < positionIndex?positionIndex+1:positionIndex]);
+  // img2 = preloadImage(imageurls[positionIndex < positionIndex?positionIndex+1:positionIndex]);
+  // img3 = preloadImage(imageurls[positionIndex < positionIndex?positionIndex+1:positionIndex]);
+  // img4 = preloadImage(imageurls[positionIndex < positionIndex?positionIndex+1:positionIndex]);
+  // img5 = preloadImage(imageurls[positionIndex < positionIndex?positionIndex+1:positionIndex]);
   //
   console.log(gestureState);
   if (gestureState === "Swipe Up") {
@@ -132,6 +167,24 @@ window.addEventListener("touchend", (e) => {
     console.log(window.scrollX, window.scrollY);
   } else if (gestureState === "Swipe Down") {
     window.scroll(0, 0);
+  } else if (gestureState === "Swipe Left") {
+    if (positionIndex > 0) {
+      positionIndex -= 1;
+    } else {
+      positionIndex == 0;
+    }
+    let cimg = preloadImage(imageurls[positionIndex]);
+    cimg.setAttribute("class", "slideImage");
+    galary.innerHTML = cimg;
+  } else if (gestureState === "Swipe Right") {
+    if (positionIndex < urlsArrayLength) {
+      positionIndex += 1;
+    } else {
+      positionIndex == urlsArrayLength;
+    }
+    let cimg = preloadImage(imageurls[positionIndex]);
+    cimg.setAttribute("class", "slideImage");
+    galary.innerHTML = cimg;
   }
 });
 console.log("Screen height", screenHeight);
