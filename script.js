@@ -1,9 +1,21 @@
 let screenWidth = screen.width;
 let screenHeight = screen.height;
 
+const mainImageDiv = document.getElementById("mainImage");
+const fontAnimationDiv = document.getElementById("typing-animation");
+
+function preloadImage(url) {
+  const img = new Image();
+  img.src = url;
+  return img;
+}
+const mainImageFile = preloadImage("./teja-images/Main-image.jpg");
+mainImageFile.setAttribute("class", "mainImage");
+//img.setAttribute('class', className);
+mainImageDiv.appendChild(mainImageFile);
 // Body
 let bodyElement = document.querySelector("body");
-bodyElement.style.backgroundColor = "purple";
+// bodyElement.style.backgroundColor = "rgb(255, 182, 193)";
 // Main Image Container
 let mainImageContainer = document.querySelector(".mainImageContainer");
 mainImageContainer.style.width = `${screenWidth}px`;
@@ -13,7 +25,7 @@ mainImageContainer.style.top = 0;
 mainImageContainer.style.left = 0;
 
 // Main Image
-let mainImage = document.querySelector(".mainImage");
+let mainImage = document.querySelector(".mainImageDiv");
 mainImage.style.top = `${screenHeight * 0.15}px`;
 mainImage.style.height = `${screenWidth * 0.7}px`;
 mainImage.style.width = `${screenWidth * 0.7}px`;
@@ -24,6 +36,12 @@ console.log(mainImage.offsetWidth);
 console.log((screenWidth - mainImageWidth) / 2);
 mainImage.style.left = `${(screenWidth - mainImageWidth) / 2}px`;
 
+// Typing animation
+fontAnimationDiv.style.position = "absolute";
+fontAnimationDiv.style.top = `${screenHeight * 0.6}px`;
+fontAnimationDiv.style.left = `${screenWidth * 0.05}px`;
+// fontAnimationDiv.style.left = `${(screenWidth - mainImageWidth-15) / 2}px`;
+
 // Galary
 let galary = document.querySelector(".galary");
 galary.style.position = "absolute";
@@ -33,13 +51,14 @@ galary.style.width = `${screenWidth}px`;
 
 // Slide Image
 let slideImage = document.querySelector(".slideImage");
-slideImage.style.height = `${screenHeight - 150}px`;
+// slideImage.style.height = `${screenHeight - 150}px`;
+slideImage.style.height = `${screenHeight}px`;
 slideImage.style.width = `${screenWidth}px`;
 
-// Slide Image Info
-let slideImageInfo = document.querySelector(".slideImageInfo");
-slideImageInfo.style.height = "150px";
-slideImageInfo.style.width = `${screenWidth}`;
+// // Slide Image Info
+// let slideImageInfo = document.querySelector(".slideImageInfo");
+// slideImageInfo.style.height = "150px";
+// slideImageInfo.style.width = `${screenWidth}`;
 
 // Canvas
 let canvas = document.querySelector("canvas");
@@ -118,3 +137,36 @@ window.addEventListener("touchend", (e) => {
 console.log("Screen height", screenHeight);
 console.log("Document height", document.documentElement.scrollHeight);
 let ctx = canvas.getContext("2d");
+function startTypingAnimation() {
+  const element = document.getElementById("typing-animation");
+  const text = "Happy Birthday ";
+  const redText = "Teja";
+  let index = 0;
+
+  function type() {
+    if (index < text.length) {
+      // Typing the non-red part
+      element.innerHTML += text.charAt(index);
+      index++;
+      setTimeout(type, 150); // Adjust typing speed
+    } else if (index >= text.length && index < text.length + redText.length) {
+      // Typing the red part
+      element.innerHTML = `${text}<span class="red">${redText.substring(
+        0,
+        index - text.length + 1
+      )}</span>`;
+      index++;
+      setTimeout(type, 150); // Adjust typing speed
+    } else {
+      // Reset for looping
+      index = 0;
+      element.innerHTML = ""; // Clear the container
+      setTimeout(type, 2000); // Wait before starting the typing animation again
+    }
+  }
+
+  type(); // Start typing animation
+}
+
+// Start the animation
+startTypingAnimation();
