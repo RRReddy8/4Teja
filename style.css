@@ -5,7 +5,8 @@
     /* overflow: hidden; */
 }
 body {
-    background-color: rgb(255, 182, 193);
+    /* background-color: rgb(255, 182, 193); */
+    background-color: black;
 }
 
 /* .mainImageContainer {
@@ -47,7 +48,7 @@ body {
 }
 
 .slideImage{
-    object-fit: contain;
+    object-fit: cover;
 }
 
 .slideImageInfo {

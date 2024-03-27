@@ -42,8 +42,34 @@ function preloadImage(url) {
 
 const mainImageFile = preloadImage("./teja-images/Main-image.jpg");
 mainImageFile.setAttribute("class", "mainImage");
-//img.setAttribute('class', className);
 mainImageDiv.appendChild(mainImageFile);
+img1 = preloadImage(
+  imageurls[
+    positionIndex + 5 < positionIndex ? positionIndex + 1 : positionIndex
+  ]
+);
+img2 = preloadImage(
+  imageurls[
+    positionIndex + 5 < positionIndex ? positionIndex + 2 : positionIndex
+  ]
+);
+img3 = preloadImage(
+  imageurls[
+    positionIndex + 5 < positionIndex ? positionIndex + 3 : positionIndex
+  ]
+);
+img4 = preloadImage(
+  imageurls[
+    positionIndex + 5 < positionIndex ? positionIndex + 4 : positionIndex
+  ]
+);
+img5 = preloadImage(
+  imageurls[
+    positionIndex + 5 < positionIndex ? positionIndex + 5 : positionIndex
+  ]
+);
+let slideImageFile = preloadImage("./teja-images/IMG-20230513-WA0005.jpg");
+//img.setAttribute('class', className);
 // Body
 let bodyElement = document.querySelector("body");
 // bodyElement.style.backgroundColor = "rgb(255, 182, 193)";
@@ -81,10 +107,18 @@ galary.style.height = `${screenHeight}px`;
 galary.style.width = `${screenWidth}px`;
 
 // Slide Image
-let slideImage = document.querySelector(".slideImage");
+function slideImageInit(element) {
+  element.style.height = `${screenHeight}px`;
+  element.style.width = `${screenWidth}px`;
+  element.style.objectFit = "contain";
+  return element;
+}
+slideImageFile = slideImageInit(slideImageFile);
+galary.appendChild(slideImageFile);
+// let slideImage = document.querySelector(".slideImage");
 // slideImage.style.height = `${screenHeight - 150}px`;
-slideImage.style.height = `${screenHeight}px`;
-slideImage.style.width = `${screenWidth}px`;
+// slideImage.style.height = `${screenHeight}px`;
+// slideImage.style.width = `${screenWidth}px`;
 
 // // Slide Image Info
 // let slideImageInfo = document.querySelector(".slideImageInfo");
@@ -152,22 +186,18 @@ window.addEventListener("touchend", (e) => {
       gestureState = "Swipe Down";
     }
   }
-  // img1 = preloadImage(imageurls[positionIndex < positionIndex?positionIndex+1:positionIndex]);
-  // img2 = preloadImage(imageurls[positionIndex < positionIndex?positionIndex+1:positionIndex]);
-  // img3 = preloadImage(imageurls[positionIndex < positionIndex?positionIndex+1:positionIndex]);
-  // img4 = preloadImage(imageurls[positionIndex < positionIndex?positionIndex+1:positionIndex]);
-  // img5 = preloadImage(imageurls[positionIndex < positionIndex?positionIndex+1:positionIndex]);
+
   //
   console.log(gestureState);
   if (gestureState === "Swipe Up") {
-    console.log(window.scrollX, window.scrollY);
-    // window.scrollTo({ top: screenHeight, behavior: "auto" });
-    // window.scrollTo({ top: screenHeight, behavior: "smooth" });
-    window.scroll(0, screenHeight);
-    console.log(window.scrollX, window.scrollY);
+    if (window.screenY <= screenHeight - 150) {
+      console.log(window.scrollX, window.scrollY);
+      window.scroll(0, screenHeight);
+      console.log(window.scrollX, window.scrollY);
+    }
   } else if (gestureState === "Swipe Down") {
     window.scroll(0, 0);
-  } else if (gestureState === "Swipe Left") {
+  } else if (gestureState === "Swipe Right") {
     if (positionIndex > 0) {
       positionIndex -= 1;
     } else {
@@ -175,8 +205,9 @@ window.addEventListener("touchend", (e) => {
     }
     let cimg = preloadImage(imageurls[positionIndex]);
     cimg.setAttribute("class", "slideImage");
-    galary.innerHTML = cimg;
-  } else if (gestureState === "Swipe Right") {
+    cimg = slideImageInit(cimg);
+    galary.replaceChild(cimg, galary.childNodes[0]);
+  } else if (gestureState === "Swipe Left") {
     if (positionIndex < urlsArrayLength) {
       positionIndex += 1;
     } else {
@@ -184,7 +215,8 @@ window.addEventListener("touchend", (e) => {
     }
     let cimg = preloadImage(imageurls[positionIndex]);
     cimg.setAttribute("class", "slideImage");
-    galary.innerHTML = cimg;
+    cimg = slideImageInit(cimg);
+    galary.replaceChild(cimg, galary.childNodes[0]);
   }
 });
 console.log("Screen height", screenHeight);
@@ -201,7 +233,7 @@ function startTypingAnimation() {
       // Typing the non-red part
       element.innerHTML += text.charAt(index);
       index++;
-      setTimeout(type, 150); // Adjust typing speed
+      setTimeout(type, 70); // Adjust typing speed
     } else if (index >= text.length && index < text.length + redText.length) {
       // Typing the red part
       element.innerHTML = `${text}<span class="red">${redText.substring(
@@ -209,12 +241,12 @@ function startTypingAnimation() {
         index - text.length + 1
       )}</span>`;
       index++;
-      setTimeout(type, 150); // Adjust typing speed
+      setTimeout(type, 200); // Adjust typing speed
     } else {
       // Reset for looping
       index = 0;
       element.innerHTML = ""; // Clear the container
-      setTimeout(type, 2000); // Wait before starting the typing animation again
+      setTimeout(type, 500); // Wait before starting the typing animation again
     }
   }
 
