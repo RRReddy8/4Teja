@@ -2,10 +2,10 @@ let screenWidth = screen.width;
 let screenHeight = screen.height;
 
 let positionIndex = 0;
-let imageurls = [
+let imageUrls = [
   "./teja-images/IMG-20230326-WA0006.jpg",
   "./teja-images/IMG-20231002-WA0008.jpg",
-  "./teja-images/ IMG-20240111-WA0011.jpg",
+  "./teja-images/IMG-20240111-WA0011.jpg",
   "./teja-images/IMG_20230521_154115.jpg",
   "./teja-images/IMG_20231222_185919.jpg",
   "./teja-images/IMG_20240211_174719.jpg",
@@ -29,9 +29,9 @@ let imageurls = [
   "./teja-images/IMG_20231210_181445.jpg",
   "./teja-images/IMG-20231124-WA0014.jpg"
 ];
-let urlsArrayLength = imageurls.length;
+// let urlsArrayLength = imageurls.length;
 
-const mainImageDiv = document.getElementById("mainImage");
+// const mainImageDiv = document.getElementById("mainImage");
 const fontAnimationDiv = document.getElementById("typing-animation");
 
 function preloadImage(url) {
@@ -40,39 +40,52 @@ function preloadImage(url) {
   return img;
 }
 
-const mainImageFile = preloadImage("./teja-images/Main-image.jpg");
-mainImageFile.setAttribute("class", "mainImage");
-mainImageDiv.appendChild(mainImageFile);
-img1 = preloadImage(
-  imageurls[
-    positionIndex + 5 < positionIndex ? positionIndex + 1 : positionIndex
-  ]
-);
-img2 = preloadImage(
-  imageurls[
-    positionIndex + 5 < positionIndex ? positionIndex + 2 : positionIndex
-  ]
-);
-img3 = preloadImage(
-  imageurls[
-    positionIndex + 5 < positionIndex ? positionIndex + 3 : positionIndex
-  ]
-);
-img4 = preloadImage(
-  imageurls[
-    positionIndex + 5 < positionIndex ? positionIndex + 4 : positionIndex
-  ]
-);
-img5 = preloadImage(
-  imageurls[
-    positionIndex + 5 < positionIndex ? positionIndex + 5 : positionIndex
-  ]
-);
-let slideImageFile = preloadImage("./teja-images/IMG-20230513-WA0005.jpg");
-//img.setAttribute('class', className);
-// Body
-let bodyElement = document.querySelector("body");
-// bodyElement.style.backgroundColor = "rgb(255, 182, 193)";
+// Image Preloading Logic
+
+let currentIndex = 0;
+let imagesToPreload = 10;
+let preloadedImages = [];
+// let imageUrls = []; // Your array of 130 image URLs
+
+// Function to preload images
+function preloadImages(startIndex) {
+  preloadedImages = [];
+  for (
+    let i = startIndex;
+    i < startIndex + imagesToPreload && i < imageUrls.length;
+    i++
+  ) {
+    let img = new Image();
+    img.src = imageUrls[i];
+    preloadedImages.push(img);
+  }
+}
+
+// Initial preload
+preloadImages(currentIndex);
+
+// // Function to update the image on swipe
+// function updateImageOnSwipe(direction) {
+//   if (direction === "left") {
+//     currentIndex++;
+//     if (currentIndex > preloadedImages.length - 4) {
+//       preloadImages(currentIndex + 3);
+//     }
+//   } else if (direction === "right") {
+//     currentIndex--;
+//     if (currentIndex < 0) {
+//       currentIndex = 0; // Prevent going into negative index
+//     }
+//   }
+
+//   // Update the src of the slideImage
+//   let slideImage = document.querySelector(".slideImage");
+//   slideImage.src = preloadedImages[currentIndex].src;
+// }
+
+// Event listeners for swipe events
+// You'll need to implement the logic to detect swipes and call updateImageOnSwipe with 'left' or 'right'
+
 // Main Image Container
 let mainImageContainer = document.querySelector(".mainImageContainer");
 mainImageContainer.style.width = `${screenWidth}px`;
@@ -81,13 +94,26 @@ mainImageContainer.style.position = "absolute";
 mainImageContainer.style.top = 0;
 mainImageContainer.style.left = 0;
 
-// Main Image
-let mainImage = document.querySelector(".mainImageDiv");
+// // Main Image div
+// let mainImage1 = document.querySelector(".mainImageDiv");
+// mainImage1.style.top = `${screenHeight * 0.15}px`;
+// mainImage1.style.height = `${screenWidth * 0.7}px`;
+// mainImage1.style.width = `${screenWidth * 0.7}px`;
+// mainImage1.style.borderRadius = "50%";
+// mainImage1.style.position = "absolute";
+// let mainImageWidth1 = mainImage1.offsetWidth;
+// console.log(mainImage1.offsetWidth);
+// console.log((screenWidth - mainImageWidth1) / 2);
+// mainImage1.style.left = `${(screenWidth - mainImageWidth1) / 2}px`;
+
+const mainImage = preloadImage("./teja-images/Main-image.jpg");
+mainImage.setAttribute("id", "mainImage");
 mainImage.style.top = `${screenHeight * 0.15}px`;
 mainImage.style.height = `${screenWidth * 0.7}px`;
 mainImage.style.width = `${screenWidth * 0.7}px`;
 mainImage.style.borderRadius = "50%";
 mainImage.style.position = "absolute";
+mainImageContainer.appendChild(mainImage);
 let mainImageWidth = mainImage.offsetWidth;
 console.log(mainImage.offsetWidth);
 console.log((screenWidth - mainImageWidth) / 2);
@@ -97,6 +123,14 @@ mainImage.style.left = `${(screenWidth - mainImageWidth) / 2}px`;
 fontAnimationDiv.style.position = "absolute";
 fontAnimationDiv.style.top = `${screenHeight * 0.6}px`;
 fontAnimationDiv.style.left = `${screenWidth * 0.05}px`;
+
+//Slide Image
+let slideImageFile = preloadImage("./teja-images/IMG-20230513-WA0005.jpg");
+//img.setAttribute('class', className);
+// Body
+let bodyElement = document.querySelector("body");
+// bodyElement.style.backgroundColor = "rgb(255, 182, 193)";
+
 // fontAnimationDiv.style.left = `${(screenWidth - mainImageWidth-15) / 2}px`;
 
 // Galary
@@ -113,8 +147,10 @@ function slideImageInit(element) {
   element.style.objectFit = "contain";
   return element;
 }
-slideImageFile = slideImageInit(slideImageFile);
-galary.appendChild(slideImageFile);
+let slideImage = slideImageInit(slideImageFile);
+slideImage.setAttribute("id", "slideImage");
+galary.appendChild(slideImage);
+// let slideImage = document.querySelector(".slideImage");
 // let slideImage = document.querySelector(".slideImage");
 // slideImage.style.height = `${screenHeight - 150}px`;
 // slideImage.style.height = `${screenHeight}px`;
@@ -198,30 +234,38 @@ window.addEventListener("touchend", (e) => {
   } else if (gestureState === "Swipe Down") {
     window.scroll(0, 0);
   } else if (gestureState === "Swipe Right") {
-    if (positionIndex > 0) {
-      positionIndex -= 1;
-    } else {
-      positionIndex == 0;
+    currentIndex--;
+    if (currentIndex < 0) {
+      currentIndex = 0; // Prevent going into negative index
     }
-    let cimg = preloadImage(imageurls[positionIndex]);
-    cimg.setAttribute("class", "slideImage");
-    cimg = slideImageInit(cimg);
-    galary.replaceChild(cimg, galary.childNodes[0]);
+
+    // Update the src of the slideImage
+    slideImage = document.getElementById("slideImage");
+    slideImage.src = preloadedImages[currentIndex].src;
+    // let newSlideImg = preloadedImages[currentIndex];
+    // galary.replaceChild(slideImage, newSlideImg);
   } else if (gestureState === "Swipe Left") {
-    if (positionIndex < urlsArrayLength) {
-      positionIndex += 1;
-    } else {
-      positionIndex == urlsArrayLength;
+    currentIndex++;
+    if (currentIndex > preloadedImages.length - 4) {
+      preloadImages(currentIndex + 3);
     }
-    let cimg = preloadImage(imageurls[positionIndex]);
-    cimg.setAttribute("class", "slideImage");
-    cimg = slideImageInit(cimg);
-    galary.replaceChild(cimg, galary.childNodes[0]);
+
+    // Update the src of the slideImage
+    slideImage = document.getElementById("slideImage");
+    slideImage.src = preloadedImages[currentIndex].src;
+    // let newSlideImg = preloadedImages[currentIndex];
+    // galary.replaceChild(slideImage, newSlideImg);
   }
+  // Update the src of the slideImage
+  let slideImage = document.getElementById("slideImage");
+  slideImage.src = preloadedImages[currentIndex].src;
+  console.log(preloadImages.length);
 });
 console.log("Screen height", screenHeight);
 console.log("Document height", document.documentElement.scrollHeight);
 let ctx = canvas.getContext("2d");
+
+// Typing animation
 function startTypingAnimation() {
   const element = document.getElementById("typing-animation");
   const text = "Happy Birthday ";
