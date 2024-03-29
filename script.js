@@ -81,8 +81,6 @@ fontAnimationDiv.style.position = "absolute";
 fontAnimationDiv.style.top = `${screenHeight * 0.6}px`;
 fontAnimationDiv.style.left = `${screenWidth * 0.05}px`;
 
-// let imageUrls = []; // Your array of 130 image URLs
-
 // Main Image Container
 let mainImageContainer = document.querySelector(".mainImageContainer");
 mainImageContainer.style.width = `${screenWidth}px`;
@@ -115,45 +113,6 @@ preloadImage("./teja-images/mar14.jpg").then((image) => {
   image = slideImageInit(image);
   galary.appendChild(image);
 });
-
-// let slideImage = slideImageInit(slideImageFile);
-// slideImage.setAttribute("id", "slideImage");
-// galary.appendChild(slideImage);
-// Function to preload images
-
-// // Function to update the image on swipe
-// function updateImageOnSwipe(direction) {
-//   if (direction === "left") {
-//     currentIndex++;
-//     if (currentIndex > preloadedImages.length - 4) {
-//       preloadImages(currentIndex + 3);
-//     }
-//   } else if (direction === "right") {
-//     currentIndex--;
-//     if (currentIndex < 0) {
-//       currentIndex = 0; // Prevent going into negative index
-//     }
-//   }
-
-//   // Update the src of the slideImage
-//   let slideImage = document.querySelector(".slideImage");
-//   slideImage.src = preloadedImages[currentIndex].src;
-// }
-
-// Event listeners for swipe events
-// You'll need to implement the logic to detect swipes and call updateImageOnSwipe with 'left' or 'right'
-
-// // Main Image div
-// let mainImage1 = document.querySelector(".mainImageDiv");
-// mainImage1.style.top = `${screenHeight * 0.15}px`;
-// mainImage1.style.height = `${screenWidth * 0.7}px`;
-// mainImage1.style.width = `${screenWidth * 0.7}px`;
-// mainImage1.style.borderRadius = "50%";
-// mainImage1.style.position = "absolute";
-// let mainImageWidth1 = mainImage1.offsetWidth;
-// console.log(mainImage1.offsetWidth);
-// console.log((screenWidth - mainImageWidth1) / 2);
-// mainImage1.style.left = `${(screenWidth - mainImageWidth1) / 2}px`;
 
 //Slide Image
 // let slideImageFile = preloadImage("./teja-images/IMG-20230513-WA0005.jpg");
@@ -193,8 +152,6 @@ let touchEndPosision = {
 let gestureState = null;
 
 window.addEventListener("touchstart", (e) => {
-  //   console.log("touch start");
-  //   console.log(e);
   touchStartPosision = {
     X: e.targetTouches[0].clientX,
     Y: e.targetTouches[0].clientY
@@ -206,16 +163,12 @@ window.addEventListener("touchmove", (e) => {
 });
 
 window.addEventListener("touchend", (e) => {
-  //   console.log("touch end");
-  //   console.log(e);
   touchEndPosision = {
     X: e.changedTouches[0].clientX,
     Y: e.changedTouches[0].clientY
   };
   let X_POS_DIFF = touchStartPosision.X - touchEndPosision.X;
   let Y_POS_DIFF = touchStartPosision.Y - touchEndPosision.Y;
-  //   console.log("X Pos Diff ", touchStartPosision.X - touchEndPosision.X);
-  //   console.log("Y Pos Diff ", touchStartPosision.Y - touchEndPosision.Y);
 
   // Touch gesture detection code
   if (Math.abs(X_POS_DIFF) <= 5 && Math.abs(Y_POS_DIFF) <= 5) {
@@ -254,10 +207,9 @@ window.addEventListener("touchend", (e) => {
     if (currentIndex < 0) {
       currentIndex = 0; // Prevent going into negative index
     }
-    // Update the src of the slideImage
+    // Update the slideImage
     let slideImage = document.getElementById("slideImage");
     let parentElement = slideImage.parentElement;
-    // slideImage.src = preloadedImages[currentIndex].src;
     let newSlideImg = preloadedImages[currentIndex];
     newSlideImg = slideImageInit(newSlideImg);
     parentElement.replaceChild(newSlideImg, slideImage);
@@ -266,18 +218,14 @@ window.addEventListener("touchend", (e) => {
     if (currentIndex > preloadedImages.length - 15) {
       preloadImages(currentIndex + 3);
     }
-    // Update the src of the slideImage
+    // Update the slideImage
     let slideImage = document.getElementById("slideImage");
     let parentElement = slideImage.parentElement;
-    // slideImage.src = preloadedImages[currentIndex].src;
     let newSlideImg = preloadedImages[currentIndex];
     newSlideImg = slideImageInit(newSlideImg);
     parentElement.replaceChild(newSlideImg, slideImage);
   }
-  // Update the src of the slideImage
-  // let slideImage = document.getElementById("slideImage");
-  // slideImage.src = preloadedImages[currentIndex].src;
-  // console.log(preloadImages.length);
+
   console.log("Current index", currentIndex);
   console.log("preloadedImages len", preloadedImages.length);
 });
