@@ -1,7 +1,9 @@
 let screenWidth = screen.width;
 let screenHeight = screen.height;
 
-let positionIndex = 0;
+let currentIndex = 0;
+let imagesToPreload = 10;
+let preloadedImages = [];
 let imageUrls = [
   "./teja-images/IMG-20230326-WA0006.jpg",
   "./teja-images/IMG-20231002-WA0008.jpg",
@@ -29,25 +31,40 @@ let imageUrls = [
   "./teja-images/IMG_20231210_181445.jpg",
   "./teja-images/IMG-20231124-WA0014.jpg"
 ];
-// let urlsArrayLength = imageurls.length;
 
-// const mainImageDiv = document.getElementById("mainImage");
-const fontAnimationDiv = document.getElementById("typing-animation");
-
-function preloadImage(url) {
-  const img = new Image();
-  img.src = url;
-  return img;
+function mainImageInit(image) {
+  image.setAttribute("id", "mainImage");
+  image.style.top = `${screenHeight * 0.15}px`;
+  image.style.height = `${screenWidth * 0.7}px`;
+  image.style.width = `${screenWidth * 0.7}px`;
+  image.style.borderRadius = "50%";
+  image.style.position = "absolute";
+  return image;
 }
 
-// Image Preloading Logic
+//Slide Image
+function slideImageInit(element) {
+  element.setAttribute("id", "slideImage");
+  element.style.height = `${screenHeight}px`;
+  element.style.width = `${screenWidth}px`;
+  element.style.objectFit = "contain";
+  return element;
+}
 
-let currentIndex = 0;
-let imagesToPreload = 10;
-let preloadedImages = [];
-// let imageUrls = []; // Your array of 130 image URLs
+async function preloadImage(url) {
+  try {
+    const response = await fetch(url);
+    const imageBlob = await response.blob();
+    const imageObjectURL = URL.createObjectURL(imageBlob);
 
-// Function to preload images
+    let imageElement = document.createElement("img");
+    imageElement.src = imageObjectURL;
+    return imageElement;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function preloadImages(startIndex) {
   preloadedImages = [];
   for (
@@ -55,14 +72,55 @@ function preloadImages(startIndex) {
     i < startIndex + imagesToPreload && i < imageUrls.length;
     i++
   ) {
-    let img = new Image();
-    img.src = imageUrls[i];
-    preloadedImages.push(img);
+    preloadImage(imageUrls[i]).then((image) => preloadedImages.push(image));
   }
 }
 
+// Typing animation text creation and position
+const fontAnimationDiv = document.getElementById("typing-animation");
+fontAnimationDiv.style.position = "absolute";
+fontAnimationDiv.style.top = `${screenHeight * 0.6}px`;
+fontAnimationDiv.style.left = `${screenWidth * 0.05}px`;
+
+// let imageUrls = []; // Your array of 130 image URLs
+
+// Main Image Container
+let mainImageContainer = document.querySelector(".mainImageContainer");
+mainImageContainer.style.width = `${screenWidth}px`;
+mainImageContainer.style.height = `${screenHeight}px`;
+mainImageContainer.style.position = "absolute";
+mainImageContainer.style.top = 0;
+mainImageContainer.style.left = 0;
+
+//for main image loading
+preloadImage("./teja-images/Main-image.jpg").then((mainImage) => {
+  mainImage = mainImageInit(mainImage);
+  mainImageContainer.appendChild(mainImage);
+  let mainImageWidth = mainImage.offsetWidth;
+  console.log(mainImage.offsetWidth);
+  console.log((screenWidth - mainImageWidth) / 2);
+  mainImage.style.left = `${(screenWidth - mainImageWidth) / 2}px`;
+});
+
 // Initial preload
 preloadImages(currentIndex);
+
+// Galary
+let galary = document.querySelector(".galary");
+galary.style.position = "absolute";
+galary.style.top = `${screenHeight - 100}px`;
+galary.style.height = `${screenHeight}px`;
+galary.style.width = `${screenWidth}px`;
+
+preloadImage("./teja-images/mar14.jpg").then((image) => {
+  image = slideImageInit(image);
+  galary.appendChild(image);
+});
+
+// let slideImage = slideImageInit(slideImageFile);
+// slideImage.setAttribute("id", "slideImage");
+// galary.appendChild(slideImage);
+// Function to preload images
 
 // // Function to update the image on swipe
 // function updateImageOnSwipe(direction) {
@@ -86,14 +144,6 @@ preloadImages(currentIndex);
 // Event listeners for swipe events
 // You'll need to implement the logic to detect swipes and call updateImageOnSwipe with 'left' or 'right'
 
-// Main Image Container
-let mainImageContainer = document.querySelector(".mainImageContainer");
-mainImageContainer.style.width = `${screenWidth}px`;
-mainImageContainer.style.height = `${screenHeight}px`;
-mainImageContainer.style.position = "absolute";
-mainImageContainer.style.top = 0;
-mainImageContainer.style.left = 0;
-
 // // Main Image div
 // let mainImage1 = document.querySelector(".mainImageDiv");
 // mainImage1.style.top = `${screenHeight * 0.15}px`;
@@ -106,50 +156,17 @@ mainImageContainer.style.left = 0;
 // console.log((screenWidth - mainImageWidth1) / 2);
 // mainImage1.style.left = `${(screenWidth - mainImageWidth1) / 2}px`;
 
-const mainImage = preloadImage("./teja-images/Main-image.jpg");
-mainImage.setAttribute("id", "mainImage");
-mainImage.style.top = `${screenHeight * 0.15}px`;
-mainImage.style.height = `${screenWidth * 0.7}px`;
-mainImage.style.width = `${screenWidth * 0.7}px`;
-mainImage.style.borderRadius = "50%";
-mainImage.style.position = "absolute";
-mainImageContainer.appendChild(mainImage);
-let mainImageWidth = mainImage.offsetWidth;
-console.log(mainImage.offsetWidth);
-console.log((screenWidth - mainImageWidth) / 2);
-mainImage.style.left = `${(screenWidth - mainImageWidth) / 2}px`;
-
-// Typing animation
-fontAnimationDiv.style.position = "absolute";
-fontAnimationDiv.style.top = `${screenHeight * 0.6}px`;
-fontAnimationDiv.style.left = `${screenWidth * 0.05}px`;
-
 //Slide Image
-let slideImageFile = preloadImage("./teja-images/IMG-20230513-WA0005.jpg");
+// let slideImageFile = preloadImage("./teja-images/IMG-20230513-WA0005.jpg");
 //img.setAttribute('class', className);
 // Body
-let bodyElement = document.querySelector("body");
+// let bodyElement = document.querySelector("body");
 // bodyElement.style.backgroundColor = "rgb(255, 182, 193)";
 
 // fontAnimationDiv.style.left = `${(screenWidth - mainImageWidth-15) / 2}px`;
 
-// Galary
-let galary = document.querySelector(".galary");
-galary.style.position = "absolute";
-galary.style.top = `${screenHeight - 100}px`;
-galary.style.height = `${screenHeight}px`;
-galary.style.width = `${screenWidth}px`;
-
 // Slide Image
-function slideImageInit(element) {
-  element.style.height = `${screenHeight}px`;
-  element.style.width = `${screenWidth}px`;
-  element.style.objectFit = "contain";
-  return element;
-}
-let slideImage = slideImageInit(slideImageFile);
-slideImage.setAttribute("id", "slideImage");
-galary.appendChild(slideImage);
+
 // let slideImage = document.querySelector(".slideImage");
 // let slideImage = document.querySelector(".slideImage");
 // slideImage.style.height = `${screenHeight - 150}px`;
@@ -238,28 +255,30 @@ window.addEventListener("touchend", (e) => {
     if (currentIndex < 0) {
       currentIndex = 0; // Prevent going into negative index
     }
-
     // Update the src of the slideImage
-    slideImage = document.getElementById("slideImage");
-    slideImage.src = preloadedImages[currentIndex].src;
-    // let newSlideImg = preloadedImages[currentIndex];
-    // galary.replaceChild(slideImage, newSlideImg);
+    let slideImage = document.getElementById("slideImage");
+    let parentElement = slideImage.parentElement;
+    // slideImage.src = preloadedImages[currentIndex].src;
+    let newSlideImg = preloadedImages[currentIndex];
+    newSlideImg = slideImageInit(newSlideImg);
+    parentElement.replaceChild(newSlideImg, slideImage);
   } else if (gestureState === "Swipe Left") {
     currentIndex++;
     if (currentIndex > preloadedImages.length - 4) {
       preloadImages(currentIndex + 3);
     }
-
     // Update the src of the slideImage
-    slideImage = document.getElementById("slideImage");
-    slideImage.src = preloadedImages[currentIndex].src;
-    // let newSlideImg = preloadedImages[currentIndex];
-    // galary.replaceChild(slideImage, newSlideImg);
+    let slideImage = document.getElementById("slideImage");
+    let parentElement = slideImage.parentElement;
+    // slideImage.src = preloadedImages[currentIndex].src;
+    let newSlideImg = preloadedImages[currentIndex];
+    newSlideImg = slideImageInit(newSlideImg);
+    parentElement.replaceChild(newSlideImg, slideImage);
   }
   // Update the src of the slideImage
-  let slideImage = document.getElementById("slideImage");
-  slideImage.src = preloadedImages[currentIndex].src;
-  console.log(preloadImages.length);
+  // let slideImage = document.getElementById("slideImage");
+  // slideImage.src = preloadedImages[currentIndex].src;
+  // console.log(preloadImages.length);
 });
 console.log("Screen height", screenHeight);
 console.log("Document height", document.documentElement.scrollHeight);

@@ -15,7 +15,7 @@ body {
 .mainImageDiv {
     border: 5px solid white;
 }
-.mainImage {
+#mainImage {
     height: 100%;
     width: 100%;
     /* margin: auto; */
@@ -47,7 +47,7 @@ body {
     position: fixed;
 }
 
-.slideImage{
+#slideImage{
     object-fit: cover;
 }
 
