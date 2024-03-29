@@ -2,7 +2,7 @@ let screenWidth = screen.width;
 let screenHeight = screen.height;
 
 let currentIndex = 0;
-let imagesToPreload = 10;
+let imagesToPreload = 20;
 let preloadedImages = [];
 let imageUrls = [
   "./teja-images/IMG-20230326-WA0006.jpg",
@@ -264,7 +264,7 @@ window.addEventListener("touchend", (e) => {
     parentElement.replaceChild(newSlideImg, slideImage);
   } else if (gestureState === "Swipe Left") {
     currentIndex++;
-    if (currentIndex > preloadedImages.length - 4) {
+    if (currentIndex > preloadedImages.length - 15) {
       preloadImages(currentIndex + 3);
     }
     // Update the src of the slideImage
