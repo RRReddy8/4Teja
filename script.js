@@ -157,6 +157,21 @@ window.addEventListener("touchstart", (e) => {
     X: e.targetTouches[0].clientX,
     Y: e.targetTouches[0].clientY
   };
+  console.log(touchStartPosision);
+  if (subBalloons && subBalloons.length > 0) {
+    console.log(subBalloons);
+    subBalloons.forEach((balloon) => {
+      if (
+        touchStartPosision.X >= balloon.x &&
+        touchStartPosision.X <= balloon.x + balloon.size &&
+        touchStartPosision.Y >= balloon.y &&
+        touchStartPosision.Y <= balloon.y + balloon.size * 2
+      ) {
+        balloon.y = screenHeight + 100;
+        balloon.x = Math.random() * canvas.width;
+      }
+    });
+  }
 });
 
 window.addEventListener("touchmove", (e) => {
@@ -381,7 +396,7 @@ function animate(time) {
       balloon.y = canvas.height + balloon.size;
       balloon.x = Math.random() * canvas.width;
     }
-
+    // console.log(balloon.x, balloon.y);
     ctx.drawImage(
       balloon.img,
       balloon.x,
