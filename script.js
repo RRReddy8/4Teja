@@ -66,7 +66,6 @@ async function preloadImage(url) {
 }
 
 function preloadImages(startIndex) {
-  preloadedImages = [];
   for (
     let i = startIndex;
     i < startIndex + imagesToPreload && i < imageUrls.length;
@@ -279,6 +278,8 @@ window.addEventListener("touchend", (e) => {
   // let slideImage = document.getElementById("slideImage");
   // slideImage.src = preloadedImages[currentIndex].src;
   // console.log(preloadImages.length);
+  console.log("Current index", currentIndex);
+  console.log("preloadedImages len", preloadedImages.length);
 });
 console.log("Screen height", screenHeight);
 console.log("Document height", document.documentElement.scrollHeight);
